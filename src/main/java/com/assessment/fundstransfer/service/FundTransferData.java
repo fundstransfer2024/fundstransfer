@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 @Data
 @Accessors(chain = true)
 public class FundTransferData {
-    private final Account debitAccount;
-    private final Account creditAccount;
-    private final BigDecimal debitAmount;
-    private final BigDecimal creditAmount;
+    private Account debitAccount;
+    private Account creditAccount;
+    private BigDecimal debitAmount;
+    private BigDecimal creditAmount;
 
 }

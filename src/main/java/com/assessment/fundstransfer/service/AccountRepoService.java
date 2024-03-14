@@ -39,7 +39,7 @@ public class AccountRepoService {
         throw new AccountNotFoundException();
     }
 
-    public void updateAccount(Account account, BigDecimal amount) {
+    public void updateAccountBalance(Account account, BigDecimal amount) {
         BigDecimal currentBalance = account.getBalance();
         BigDecimal newBalance = currentBalance.add(amount);
         account.setBalance(newBalance);

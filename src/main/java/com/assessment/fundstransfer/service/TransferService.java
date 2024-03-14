@@ -26,9 +26,9 @@ public class TransferService {
             throws AccountNotFoundException, ExchangeRateNotFoundException, InsufficientBalanceException {
         FundTransferData fundTransferData = fundTransferDataService.getFundTransferData(debitAccountId, creditAccountId, amount, currency);
 
-        accountRepoService.updateAccount(fundTransferData.getDebitAccount(), fundTransferData
+        accountRepoService.updateAccountBalance(fundTransferData.getDebitAccount(), fundTransferData
                 .getDebitAmount().multiply(BigDecimal.valueOf(-1L)));
-        accountRepoService.updateAccount(fundTransferData.getCreditAccount(), fundTransferData
+        accountRepoService.updateAccountBalance(fundTransferData.getCreditAccount(), fundTransferData
                 .getCreditAmount());
 
         Transfer transfer = transferRepoService.createTransfer(fundTransferData);

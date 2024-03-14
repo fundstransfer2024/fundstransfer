@@ -20,11 +20,11 @@ public class ExchangeRateService {
     private ExchangeRateClient exchangeRateClient;
 
     public BigDecimal getExchangeRate(String baseCurrency, String targetCurrency) throws ExchangeRateNotFoundException {
-        logger.info(String.format("Getting exchange rates for base currency %s and target currency %s .."
+        logger.info(String.format("Fetching exchange rates for base currency %s and target currency %s .."
                 , baseCurrency, targetCurrency));
         try {
             ExchangeRate exchangeRate = exchangeRateClient.getExchangeRate(baseCurrency, targetCurrency);
-            if (exchangeRate != null && exchangeRate.isSuccess()) {
+            if (exchangeRate != null && exchangeRate.isSuccess() && baseCurrency.equals(exchangeRate.getBase())) {
                 for(Map.Entry<String, BigDecimal> e: exchangeRate.getRates().entrySet()) {
                     if(targetCurrency.equals(e.getKey())) {
                         logger.info(String.format("Obtained exchange rates successfully 1 %s = %s %s", baseCurrency

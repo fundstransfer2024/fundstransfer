@@ -47,6 +47,10 @@ public class FundTransferDataService {
             logger.error(String.format("Debit account %s does not have sufficient balance.", debitAccountId));
             throw new InsufficientBalanceException();
         }
-        return new FundTransferData(debitAccount, creditAccount, debitAmount, creditAmount);
+        return new FundTransferData()
+                .setDebitAccount(debitAccount)
+                .setCreditAccount(creditAccount)
+                .setDebitAmount(debitAmount)
+                .setCreditAmount(creditAmount);
     }
 }
