@@ -79,8 +79,4 @@ public class AccountController {
         }
     }
 
-    // mapstruct
-    // integration test
-    // readme
-
 }
