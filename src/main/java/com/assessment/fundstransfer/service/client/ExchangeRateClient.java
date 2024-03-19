@@ -9,7 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @AllArgsConstructor
 public class ExchangeRateClient {
 
-    private static final String API_ACCESS_KEY = "TOKEN";
+    private static final String API_ACCESS_KEY = "55c5fd6f42e7bc6d817be51ee030b0f2";
     private RestTemplate restTemplate;
 
     public ExchangeRate getExchangeRate(String baseCurrency, String targetCurrency) {

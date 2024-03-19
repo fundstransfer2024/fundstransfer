@@ -2,10 +2,12 @@ package com.assessment.fundstransfer.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 
@@ -21,9 +23,11 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ownerId;
 
-    @Column
+    @NotNull
+    @Column(length = 3)
     private String currency;
 
+    @NotNull
     @Column
     private BigDecimal balance;
 

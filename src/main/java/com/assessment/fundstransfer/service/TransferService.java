@@ -21,7 +21,7 @@ public class TransferService {
     private AccountRepositoryService accountRepoService;
 
 
-    @Retryable(maxAttempts = 4,
+    @Retryable(maxAttempts = 10,
             backoff = @Backoff(random = true, delay = 1000, maxDelay = 5000, multiplier = 2)
             , retryFor = RuntimeException.class)
     @Transactional(isolation = Isolation.SERIALIZABLE, propagation = Propagation.REQUIRES_NEW)

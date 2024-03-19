@@ -4,6 +4,7 @@ import com.assessment.fundstransfer.exception.AccountNotFoundException;
 import com.assessment.fundstransfer.model.Account;
 import com.assessment.fundstransfer.resource.AccountResource;
 import com.assessment.fundstransfer.service.AccountRepositoryService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<Account> addAccount(@RequestBody AccountResource account) {
+    public ResponseEntity<Account> addAccount(@Valid @RequestBody AccountResource account) {
         try {
             Account savedAccount = accountRepositoryService.addAccount(account);
             return new ResponseEntity<>(savedAccount, HttpStatus.CREATED);
@@ -44,7 +45,7 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Account> updateAccount(@RequestBody AccountResource account, @PathVariable Long id) {
+    public ResponseEntity<Account> updateAccount(@Valid @RequestBody AccountResource account, @PathVariable Long id) {
         try {
             Account savedAccount = accountRepositoryService.updateAccount(account);
             return new ResponseEntity<>(savedAccount, HttpStatus.OK);
