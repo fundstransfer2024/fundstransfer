@@ -1,7 +1,6 @@
 package com.assessment.fundstransfer.service;
 
 import com.assessment.fundstransfer.model.Account;
-import com.assessment.fundstransfer.model.Transfer;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -18,9 +18,7 @@ import static org.mockito.Mockito.when;
 public class TransferOrchestratorServiceTest {
 
     @Mock
-    private AccountRepositoryService accountRepositoryServiceMock;
-    @Mock
-    private TransferRepoService transferRepoServiceMock;
+    private TransferService transferServiceMock;
     @Mock
     private FundTransferDataService fundTransferDataServiceMock;
     @InjectMocks
@@ -55,21 +53,13 @@ public class TransferOrchestratorServiceTest {
                 .setCreditAmount(creditAmount);
         when(fundTransferDataServiceMock.getFundTransferData(debitAccountId, creditAccountId, amount, transferCurrency))
                 .thenReturn(fundTransferData);
-        when(transferRepoServiceMock.createTransfer(fundTransferData))
-                .thenReturn(new Transfer()
-                        .setDebitAccountId(debitAccountId)
-                        .setDebitCurrency(debitAccountCurrency)
-                        .setDebitAmount(debitAmount)
-                        .setCreditAccountId(creditAccountId)
-                        .setCreditCurrency(creditAccountCurrency)
-                        .setCreditAmount(creditAmount));
 
         // WHEN
-        transferOrchestratorService.triggerTransfer(debitAccountId, creditAccountId, amount, transferCurrency);
+        FundTransferData returnedFundTransferData = transferOrchestratorService.triggerTransfer(debitAccountId, creditAccountId, amount, transferCurrency);
 
         // THEN
+        assertEquals(fundTransferData, returnedFundTransferData);
         verify(fundTransferDataServiceMock).getFundTransferData(debitAccountId, creditAccountId, amount, transferCurrency);
-//        verify(accountRepositoryServiceMock).updateAccountBalance(debitAccount, debitAmount.multiply(BigDecimal.valueOf(-1L)));
-//        verify(accountRepositoryServiceMock).updateAccountBalance(creditAccount, creditAmount);
+        verify(transferServiceMock).performTransfer(debitAccountId, creditAccountId, fundTransferData);
     }
 }

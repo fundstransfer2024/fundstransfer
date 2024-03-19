@@ -1,6 +1,7 @@
 package com.assessment.fundstransfer.controller;
 
 import com.assessment.fundstransfer.model.Account;
+import com.assessment.fundstransfer.resource.AccountResource;
 import com.assessment.fundstransfer.service.AccountRepositoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,7 +33,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<Account> addAccount(@RequestBody Account account) {
+    public ResponseEntity<Account> addAccount(@RequestBody AccountResource account) {
         try {
             Account savedAccount = accountRepositoryService.addAccount(account);
             return new ResponseEntity<>(savedAccount, HttpStatus.CREATED);
@@ -40,4 +41,10 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // Add update, delete and getById and their tests
+    // mapstruct
+    // integration test
+    // readme
+    // pessimistic repo cleanup
 }

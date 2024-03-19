@@ -15,7 +15,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class ExchangeRateService {
 
-    private static final Logger logger = LoggerFactory.getLogger(TransferOrchestratorService.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExchangeRateService.class);
 
     private ExchangeRateClient exchangeRateClient;
 

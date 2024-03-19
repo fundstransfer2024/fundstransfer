@@ -2,11 +2,7 @@ package com.assessment.fundstransfer.service;
 
 import com.assessment.fundstransfer.exception.AccountNotFoundException;
 import com.assessment.fundstransfer.exception.InsufficientBalanceException;
-import com.assessment.fundstransfer.exception.TransferFailedException;
 import lombok.AllArgsConstructor;
-import org.hibernate.JDBCException;
-import org.hibernate.PessimisticLockException;
-import org.hibernate.exception.LockAcquisitionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.retry.annotation.Backoff;
@@ -16,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.sql.SQLException;
 
 @Service
 @AllArgsConstructor
@@ -44,7 +38,8 @@ public class TransferService {
     @Recover
     public void recover(RuntimeException e, Long debitAccountId,
                         Long creditAccountId, FundTransferData fundTransferData) {
-        logger.info("All retry attempts failed");
+        logger.info(String.format("All attempts to make a transfer from %s to %s failed",
+                debitAccountId, creditAccountId));
         throw e;
     }
 

@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class TransferController {
 
-    private static final Logger logger = LoggerFactory.getLogger(TransferOrchestratorService.class);
+    private static final Logger logger = LoggerFactory.getLogger(TransferController.class);
 
     private TransferOrchestratorService transferOrchestratorService;
 
     @PostMapping
     public ResponseEntity<Void> transferFunds(@RequestBody FundsTransferResource fundsTransferResource) {
         try {
-            FundTransferData fundsTransferData =  transferOrchestratorService.triggerTransfer(fundsTransferResource.getDebitAccount()
+            FundTransferData fundsTransferData = transferOrchestratorService.triggerTransfer(fundsTransferResource.getDebitAccount()
                     , fundsTransferResource.getCreditAccount()
                     , fundsTransferResource.getAmount()
                     , fundsTransferResource.getCurrency());

@@ -3,8 +3,9 @@ package com.assessment.fundstransfer.service;
 import com.assessment.fundstransfer.exception.AccountNotFoundException;
 import com.assessment.fundstransfer.exception.InsufficientBalanceException;
 import com.assessment.fundstransfer.model.Account;
-import com.assessment.fundstransfer.repository.PessimisticWriteAccountRepository;
 import com.assessment.fundstransfer.repository.AccountRepository;
+import com.assessment.fundstransfer.repository.PessimisticWriteAccountRepository;
+import com.assessment.fundstransfer.resource.AccountResource;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,19 +20,23 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AccountRepositoryService {
 
-    private static final Logger logger = LoggerFactory.getLogger(TransferOrchestratorService.class);
+    private static final Logger logger = LoggerFactory.getLogger(AccountRepositoryService.class);
 
     private PessimisticWriteAccountRepository pessimisticWriteAccountRepository;
     private AccountRepository accountRepository;
 
     @Transactional
-    public Account addAccount(Account account) {
+    public Account addAccount(AccountResource accountResource) {
+        Account account = new Account()
+                .setCurrency(accountResource.getCurrency())
+                .setBalance(accountResource.getAmount());
         return accountRepository.save(account);
     }
 
     public List<Account> getAccounts() {
         return accountRepository.findAll();
     }
+
     public Account getAccount(Long accountId) throws AccountNotFoundException {
         Optional<Account> accountOptional = accountRepository.findById(accountId);
         if (accountOptional.isPresent()) {

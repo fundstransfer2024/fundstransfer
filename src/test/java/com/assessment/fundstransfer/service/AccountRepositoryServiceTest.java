@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class AccountRepoServiceTest {
+public class AccountRepositoryServiceTest {
 
     @Mock
     private PessimisticWriteAccountRepository pessimisticWriteAccountRepositoryMock;
@@ -31,7 +31,7 @@ public class AccountRepoServiceTest {
     @InjectMocks
     private AccountRepositoryService accountRepositoryService;
 
-    private static Account createAccount(Long creditAccountId, String currency, BigDecimal balance) {
+    private static Account createAccountResource(Long creditAccountId, String currency, BigDecimal balance) {
         return new Account()
                 .setOwnerId(creditAccountId)
                 .setCurrency(currency)
@@ -41,10 +41,10 @@ public class AccountRepoServiceTest {
     @Test
     void addAccount_shouldSave() {
         // GIVEN
-        Account account = createAccount(1L, "USD", BigDecimal.valueOf(1000L));
+        Account accountResource = createAccountResource(1L, "USD", BigDecimal.valueOf(1000L));
 
         // WHEN
-        accountRepositoryService.addAccount(account);
+        accountRepositoryService.addAccount(accountResource);
 
         // THEN
         verify(accountRepositoryMock).save(any(Account.class));
