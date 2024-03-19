@@ -11,12 +11,12 @@ The Fixer API is used to obtain the exchange rates between two currencies.
 
 ### Installation
 
-* Git clone this repository
-* Open the project in an IDE like IntelliJ
-* Use the API access key shared over email on line 12 of ExchangeRateClient class
-* Build project
-* Run the spring boot application FundstransferApplication
-* The server should be running on http://localhost:8080/
+1. Git clone this repository
+2. Open the project in an IDE like IntelliJ
+3. **Use the API access key shared over email on line 12 of ExchangeRateClient class**
+4. Build project
+5. Run the spring boot application FundstransferApplication
+6. The server should be running on http://localhost:8080/
 
 ### Executing the program
 
