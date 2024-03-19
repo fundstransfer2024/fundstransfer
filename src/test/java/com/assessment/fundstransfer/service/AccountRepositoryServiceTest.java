@@ -5,9 +5,11 @@ import com.assessment.fundstransfer.exception.AccountNotFoundException;
 import com.assessment.fundstransfer.model.Account;
 import com.assessment.fundstransfer.repository.AccountRepository;
 import com.assessment.fundstransfer.repository.PessimisticWriteAccountRepository;
+import com.assessment.fundstransfer.resource.AccountResource;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -31,9 +33,15 @@ public class AccountRepositoryServiceTest {
     @InjectMocks
     private AccountRepositoryService accountRepositoryService;
 
-    private static Account createAccountResource(Long creditAccountId, String currency, BigDecimal balance) {
+    private static Account createAccount(Long accountId, String currency, BigDecimal balance) {
         return new Account()
-                .setOwnerId(creditAccountId)
+                .setOwnerId(accountId)
+                .setCurrency(currency)
+                .setBalance(balance);
+    }
+    private static AccountResource createAccountResource(long id, String currency, BigDecimal balance) {
+        return new AccountResource()
+                .setOwnerId(id)
                 .setCurrency(currency)
                 .setBalance(balance);
     }
@@ -41,7 +49,7 @@ public class AccountRepositoryServiceTest {
     @Test
     void addAccount_shouldSave() {
         // GIVEN
-        Account accountResource = createAccountResource(1L, "USD", BigDecimal.valueOf(1000L));
+        AccountResource accountResource = createAccountResource(2L, "USD", BigDecimal.valueOf(1000L));
 
         // WHEN
         accountRepositoryService.addAccount(accountResource);
@@ -76,17 +84,22 @@ public class AccountRepositoryServiceTest {
         assertEquals(account, returnedAccount);
     }
 
-//    @Test
-//    void updateAccount_shouldSaveWithNewBalance() {
-//        // GIVEN
-//        Account account = createAccount(2L, "USD", BigDecimal.valueOf(1000L));
-//
-//        // WHEN
-//        accountRepositoryService.updateDebitAccountBalance (2L, BigDecimal.valueOf(100L));
-//
-//        // THEN
-//        verify(accountRepositoryMock).save(any(Account.class));
-//    }
+    @SneakyThrows
+    @Test
+    void updateAccount_shouldSaveWithNewBalance() {
+        // GIVEN
+        AccountResource accountResource = createAccountResource(2L, "USD", BigDecimal.valueOf(1000L));
+        Account account = createAccount(2L, "EUR",  BigDecimal.valueOf(100L));
+        when(accountRepositoryMock.findById(2L)).thenReturn(Optional.of(account));
+
+        // WHEN
+        accountRepositoryService.updateAccount(accountResource);
+
+        // THEN
+        ArgumentCaptor<Account> argumentCaptor = ArgumentCaptor.forClass(Account.class);
+        verify(accountRepositoryMock).save(argumentCaptor.capture());
+        assertEquals(BigDecimal.valueOf(1000L), argumentCaptor.getValue().getBalance());
+    }
 
     @SneakyThrows
     @Test

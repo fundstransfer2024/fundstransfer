@@ -29,7 +29,22 @@ public class AccountRepositoryService {
     public Account addAccount(AccountResource accountResource) {
         Account account = new Account()
                 .setCurrency(accountResource.getCurrency())
-                .setBalance(accountResource.getAmount());
+                .setBalance(accountResource.getBalance());
+        return accountRepository.save(account);
+    }
+
+    @Transactional
+    public Account updateAccount(AccountResource accountResource) throws AccountNotFoundException {
+        Long accountId = accountResource.getOwnerId();
+        Optional<Account> accountOptional = accountRepository.findById(accountId);
+        if (accountOptional.isEmpty()) {
+            logger.error(String.format("Account %s does not exist.", accountId));
+            throw new AccountNotFoundException();
+        }
+        Account account = accountOptional.get();
+
+        account.setCurrency(accountResource.getCurrency())
+                .setBalance(accountResource.getBalance());
         return accountRepository.save(account);
     }
 
@@ -62,6 +77,13 @@ public class AccountRepositoryService {
         saveUpdatedAccount(amount, account);
     }
 
+    public void deleteById(Long accountId) throws AccountNotFoundException {
+        if (!accountRepository.existsById(accountId)) {
+            throw new AccountNotFoundException();
+        }
+        accountRepository.deleteById(accountId);
+    }
+
     private void saveUpdatedAccount(BigDecimal amount, Account account) {
         BigDecimal newBalance = account.getBalance().add(amount);
 
@@ -77,4 +99,6 @@ public class AccountRepositoryService {
         }
         return accountOptional.get();
     }
+
+
 }

@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 @Data
 @Accessors(chain = true)
 public class AccountResource {
+    private Long ownerId;
     private String currency;
-    private BigDecimal amount;
+    private BigDecimal balance;
 }
