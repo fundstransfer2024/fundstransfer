@@ -57,6 +57,7 @@ url = "http://localhost:8080/api/transfers"
 
 ## Design decisions
 
+* I have h2 in-memory database as the data store to save the accounts
 * I have used PESSIMISTIC_WRITE lock to lock the database entity so that concurrent modifications of the account does not result in inconsistent data and to avoid lost updates
 * I have used spring retry framework to retry the transfer in case the pessimistic lock could not be obtained
 * I have used @SneakyThrows in the tests to avoid repeating the throws clause. It's more of a preference.
