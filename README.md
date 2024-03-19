@@ -63,7 +63,7 @@ url = "http://localhost:8080/api/transfers"
 * I have used @SneakyThrows in the tests to avoid repeating the throws clause. It's more of a preference.
 
 ## Optimizations
-### I would implement the following to make this project a more maintainable PROD project
+#### I would implement the following to make this project a more maintainable PROD project
 
 * @Value property to inject Fixer API key in ExchangeRateClient
 * Use mapstruct to map between resource and repository objects
