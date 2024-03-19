@@ -11,7 +11,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
@@ -22,6 +21,13 @@ public class TransferRepoServiceTest {
     private TransferRepository transferRepositoryMock;
     @InjectMocks
     private TransferRepoService transferRepoService;
+
+    private static Account createAccount(Long accountId, String currency, BigDecimal balance) {
+        return new Account()
+                .setOwnerId(accountId)
+                .setCurrency(currency)
+                .setBalance(balance);
+    }
 
     @Test
     void createTransfer_shouldSaveTransfer() {
@@ -46,12 +52,5 @@ public class TransferRepoServiceTest {
 
         // THEN
         verify(transferRepositoryMock).save(any(Transfer.class));
-    }
-
-    private static Account createAccount(Long accountId, String currency, BigDecimal balance) {
-        return new Account()
-                .setOwnerId(accountId)
-                .setCurrency(currency)
-                .setBalance(balance);
     }
 }

@@ -15,7 +15,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class ExchangeRateService {
 
-    private static final Logger logger = LoggerFactory.getLogger(TransferService.class);
+    private static final Logger logger = LoggerFactory.getLogger(TransferOrchestratorService.class);
 
     private ExchangeRateClient exchangeRateClient;
 
@@ -25,8 +25,8 @@ public class ExchangeRateService {
         try {
             ExchangeRate exchangeRate = exchangeRateClient.getExchangeRate(baseCurrency, targetCurrency);
             if (exchangeRate != null && exchangeRate.isSuccess() && baseCurrency.equals(exchangeRate.getBase())) {
-                for(Map.Entry<String, BigDecimal> e: exchangeRate.getRates().entrySet()) {
-                    if(targetCurrency.equals(e.getKey())) {
+                for (Map.Entry<String, BigDecimal> e : exchangeRate.getRates().entrySet()) {
+                    if (targetCurrency.equals(e.getKey())) {
                         logger.info(String.format("Obtained exchange rates successfully 1 %s = %s %s", baseCurrency
                                 , e.getValue().toPlainString(), targetCurrency));
                         return e.getValue();

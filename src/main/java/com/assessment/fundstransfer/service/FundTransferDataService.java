@@ -15,9 +15,9 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class FundTransferDataService {
 
-    private static final Logger logger = LoggerFactory.getLogger(TransferService.class);
+    private static final Logger logger = LoggerFactory.getLogger(TransferOrchestratorService.class);
 
-    private AccountRepoService accountRepoService;
+    private AccountRepositoryService accountRepoService;
     private ExchangeRateService exchangeRateService;
 
     public FundTransferData getFundTransferData(Long debitAccountId, Long creditAccountId, BigDecimal amount, String currency)
@@ -27,7 +27,7 @@ public class FundTransferDataService {
 
         BigDecimal creditAmount = amount;
         BigDecimal debitAmount = amount;
-        if(!debitAccount.getCurrency().equals(creditAccount.getCurrency())) {
+        if (!debitAccount.getCurrency().equals(creditAccount.getCurrency())) {
 
             BigDecimal exchangeRate;
 
@@ -42,11 +42,6 @@ public class FundTransferDataService {
             }
         }
 
-        BigDecimal debitAccountBalance = debitAccount.getBalance();
-        if(debitAccountBalance.compareTo(debitAmount) < 0) {
-            logger.error(String.format("Debit account %s does not have sufficient balance.", debitAccountId));
-            throw new InsufficientBalanceException();
-        }
         return new FundTransferData()
                 .setDebitAccount(debitAccount)
                 .setCreditAccount(creditAccount)

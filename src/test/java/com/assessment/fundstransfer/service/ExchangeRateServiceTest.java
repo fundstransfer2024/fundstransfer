@@ -26,9 +26,18 @@ public class ExchangeRateServiceTest {
     @InjectMocks
     private ExchangeRateService exchangeRateService;
 
+    private static ExchangeRate createExchangeRate(String baseCurrency, String targetCurrency, BigDecimal exchangeRate) {
+        Map<String, BigDecimal> map = new HashMap<>();
+        map.put(targetCurrency, exchangeRate);
+
+        return new ExchangeRate().setSuccess(true)
+                .setBase(baseCurrency)
+                .setRates(map);
+    }
+
     @SneakyThrows
     @Test
-    void  getExchangeRate_shouldInvokeClient() {
+    void getExchangeRate_shouldInvokeClient() {
         // GIVEN
         String baseCurrency = "USD";
         String targetCurrency = "EUR";
@@ -47,7 +56,7 @@ public class ExchangeRateServiceTest {
 
     @SneakyThrows
     @Test
-    void  getExchangeRate_shouldThrowIfClientReturnsInvalidResponse() {
+    void getExchangeRate_shouldThrowIfClientReturnsInvalidResponse() {
         // GIVEN
         String baseCurrency = "USD";
         String targetCurrency = "EUR";
@@ -63,7 +72,7 @@ public class ExchangeRateServiceTest {
 
     @SneakyThrows
     @Test
-    void  getExchangeRate_shouldThrowIfClientDoesNotReturnCurrency() {
+    void getExchangeRate_shouldThrowIfClientDoesNotReturnCurrency() {
         // GIVEN
         String baseCurrency = "USD";
         String targetCurrency = "EUR";
@@ -79,7 +88,7 @@ public class ExchangeRateServiceTest {
 
     @SneakyThrows
     @Test
-    void  getExchangeRate_shouldThrowIfClientReturnsEmptyResponse() {
+    void getExchangeRate_shouldThrowIfClientReturnsEmptyResponse() {
         // GIVEN
         String baseCurrency = "USD";
         String targetCurrency = "EUR";
@@ -93,7 +102,7 @@ public class ExchangeRateServiceTest {
 
     @SneakyThrows
     @Test
-    void  getExchangeRate_shouldThrowIfClientThrows() {
+    void getExchangeRate_shouldThrowIfClientThrows() {
         // GIVEN
         String baseCurrency = "USD";
         String targetCurrency = "EUR";
@@ -104,14 +113,5 @@ public class ExchangeRateServiceTest {
         // WHEN AND THEN
         assertThrows(ExchangeRateNotFoundException.class, () -> exchangeRateService.getExchangeRate(baseCurrency, targetCurrency));
         verify(exchangeRateClientMock).getExchangeRate(baseCurrency, targetCurrency);
-    }
-
-    private static ExchangeRate createExchangeRate(String baseCurrency, String targetCurrency, BigDecimal exchangeRate) {
-        Map<String, BigDecimal> map = new HashMap<>();
-        map.put(targetCurrency, exchangeRate);
-
-        return new ExchangeRate().setSuccess(true)
-                .setBase(baseCurrency)
-                .setRates(map);
     }
 }
